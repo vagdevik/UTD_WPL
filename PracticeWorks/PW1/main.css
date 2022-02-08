@@ -1,5 +1,16 @@
 .navbar-light .navbar-nav .nav-item .nav-link {
-
   color: white;
+}
+
+.navbar-light .navbar-nav > li > a:hover,
+.navbar-light .navbar-nav > li > a:focus {
+    background-color: white;
+    color:  black;
+}
+
+.list-group > li > a:hover,
+.list-group > li > a:focus {
+    color:  black;
 
 }
+
