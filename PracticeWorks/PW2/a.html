@@ -44,14 +44,19 @@
     		alert("Please enter some text.")
     	}
     	else{
-    		const ul = document.getElementById("todo_list_ul");
+			const ul = document.getElementById("todo_list_ul");
 			const li = document.createElement("li");
+			
+			// adding text item to list
 			const textnode = document.createTextNode(item.value);
-			const new_li_node = li.appendChild(textnode);
-			// new_li_node.appendChild(document.createElement("i").classList.add("bi bi-eraser"));
+			li.appendChild(textnode);
+			const i = document.createElement("i");
+
+			// adding eraser icon to the item in the list
+			i.classList.add("bi", "bi-eraser");
+			li.appendChild(i);
 			ul.appendChild(li);
     	}
-
     }
 
     // strike through on click
