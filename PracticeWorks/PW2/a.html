@@ -6,66 +6,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">	
 
 	<title>ToDo List</title>
-	<style type="text/css">
-		ul li.checked{
-			text-decoration: line-through;
-		}
-	</style>
+
+	<!-- CSS styling -->
+	<link rel="stylesheet" href="main.css">
+
 </head>
 <body>
 	<h1>Todo List</h1>
 	<input type="text" name="todo item" id="todo_input">
 
-	<button onClick="func()">Add Item</button><br>
+	<button onClick="addItem()">Add Item</button><br>
 
 	<div id= "res_todo_div">
 		<ul id="todo_list_ul">
-			<li>Post Grades<i class="bi bi-eraser"></i></li>
-			<li>TA Meeting<i class="bi bi-eraser"></i></li>
 		</ul>
 	</div>
 
-	<script type="text/javascript">
+	<script src="myscripts.js"></script>
+
+	<!-- <script type="text/javascript"> -->
 		
-	// enter key 
-	var input = document.getElementById("todo_input");
-   	input.addEventListener("keydown", function (e) {
-    	if (e.key === "Enter") {  
-      		func();
-    	}
-  	});
 
-	// add a new element
-    function func(){
-    	const item = document.getElementById("todo_input");
-    	todo_value = item.value;
-    	console.log(todo_value);
-    	if (todo_value===''){
-    		alert("Please enter some text.")
-    	}
-    	else{
-			const ul = document.getElementById("todo_list_ul");
-			const li = document.createElement("li");
-			
-			// adding text item to list
-			const textnode = document.createTextNode(item.value);
-			li.appendChild(textnode);
-			const i = document.createElement("i");
-
-			// adding eraser icon to the item in the list
-			i.classList.add("bi", "bi-eraser");
-			li.appendChild(i);
-			ul.appendChild(li);
-    	}
-    }
-
-    // strike through on click
-    var list = document.querySelector('ul');
-    list.addEventListener('click', function(ev){
-    	if (ev.target.tagName === 'LI') {
-    		ev.target.classList.toggle('checked');
-    	}
-    }, false);
-	</script>
+	<!-- </script> -->
 </body>
 </html>

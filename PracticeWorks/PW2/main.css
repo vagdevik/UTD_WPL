@@ -1,0 +1,9 @@
+ul li.checked{
+	text-decoration: line-through;
+}
+.cont::after {
+	margin-left: 10px;
+		content: "Complted";
+		color:  green;
+		position: absolute;
+}
