@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+</style>
+<body>
+
+<h1>Movies Info Page</h1>
+
+<button type="button" onclick="loadDoc()">Get Movies Info</button>
+<br><br>
+<table id="demo"></table>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+
+  const url = 'http://localhost:8001/movies.xml';
+
+  fetch(url, {mode: 'no-cors'})
+  .then(function(resp){
+    return resp.text();
+  })
+  .then(function(data){
+    let parser = new DOMParser(),
+    xmlDoc = parser.parseFromString(data, 'text/xml');
+    // console.log(xmlDoc.getElementsByTagName('playlist'));
+
+    var i;
+    var table="<tr><th>Title</th><th>Genre</th><th>Director</th><th>Cast</th><th>Short Description</th><th>IMDB-Rating</th></tr>";
+    var x = xmlDoc.getElementsByTagName("movie");
+
+    for (i = 0; i <x.length; i++) { 
+
+      // get title
+      table += "<tr><td>" +
+      x[i].getElementsByTagName("title")[0].childNodes[0].nodeValue +
+      "</td><td>";
+
+      // get genre
+      var genres =  x[i].getElementsByTagName("genre");
+      genre_str = "";
+      for (j = 0; j<genres.length; j++){
+        genre_str += genres[j].childNodes[0].nodeValue;
+        if (j<genres.length-1){
+          genre_str = genre_str + ", ";
+        }
+      }
+      table += genre_str +
+      "</td><td>" +
+
+      // get director
+      x[i].getElementsByTagName("director")[0].childNodes[0].nodeValue +
+      "</td><td>" ;
+
+      // get cast
+      var cast =  x[i].getElementsByTagName("person");
+      cast_people = "";
+      for (j = 0; j<cast.length; j++){
+         cast_people += cast[j].getAttribute("name");
+        if (j<cast.length-1){
+          cast_people = cast_people + ", ";
+        }
+      }
+      table += cast_people +
+      "</td><td>" +
+
+      // get short-discussion
+      x[i].getElementsByTagName("synopsis")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+
+      // get score
+      x[i].getElementsByTagName("score")[0].childNodes[0].nodeValue +
+      "</td></tr>";
+    }
+  document.getElementById("demo").innerHTML = table;
+  })
+  .catch(err => console.log(err))
+}
+</script>
+
+</body>
+</html>
