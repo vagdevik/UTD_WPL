@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+</style>
+<body>
+
+<h1>The XMLHttpRequest Object</h1>
+
+<button type="button" onclick="loadDoc()">Get Movies Info</button>
+<br><br>
+<table id="demo"></table>
+
+<script>
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+
+  const url = 'http://localhost:8001/movies.xml';
+
+  fetch(url, {mode: 'no-cors'})
+  .then(function(resp){
+    return resp.text();
+  })
+  .then(function(data){
+    let parser = new DOMParser(),
+    xmlDoc = parser.parseFromString(data, 'text/xml');
+    // myFunction(this, xmlDoc);
+    console.log(xmlDoc.getElementsByTagName('playlist'));
+    var i;
+    var table="<tr><th>Title</th><th>Genre</th><th>Director</th><th>Cast</th><th>Short Description</th><th>IMDB-Rating</th></tr>";
+    var x = xmlDoc.getElementsByTagName("movie");
+    for (i = 0; i <x.length; i++) { 
+    table += "<tr><td>" +
+    x[i].getElementsByTagName("title")[0].childNodes[0].nodeValue +
+    "</td><td>";
+    var genres =  x[i].getElementsByTagName("genre");
+    console.log("***** ",genres);
+    genre_str = "";
+    for (j = 0; j<genres.length; j++){
+      genre_str += genres[j].childNodes[0].nodeValue;
+      if (j<genres.length-1){
+        genre_str = genre_str + ", ";
+      }
+    }
+    table += genre_str +
+    "</td><td>" +
+    // x[i].getElementsByTagName("genre")[0].childNodes[0].nodeValue +
+    // "</td><td>" +
+    x[i].getElementsByTagName("director")[0].childNodes[0].nodeValue +
+    "</td><td>" ;
+    var cast =  x[i].getElementsByTagName("person");
+    console.log("***** ",cast);
+    cast_people = "";
+    for (j = 0; j<cast.length; j++){
+       cast_people += cast[j].getAttribute("name");
+      if (j<cast.length-1){
+        cast_people = cast_people + ", ";
+      }
+      console.log("cast_people: "+cast[j].getAttribute("name"));
+    }
+    table += cast_people +
+    "</td><td>" +
+    x[i].getElementsByTagName("synopsis")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("score")[0].childNodes[0].nodeValue +
+    "</td></tr>";
+  }
+  document.getElementById("demo").innerHTML = table;
+  })
+  .catch(err => console.log(err))
+
+
+
+  // xhttp.open("GET", "movies.xml", true);
+  // xhttp.send();
+}
+function myFunction(xml) {
+  // var i;
+  // var xmlDoc = xml.responseXML;
+  // var table="<tr><th>Title</th><th>Genre</th><th>Director</th><th>Cast</th><th>Short Description</th><th>IMDB-Rating</th></tr>";
+  // var x = xmlDoc.getElementsByTagName("MOVIE");
+  // for (i = 0; i <x.length; i++) { 
+  //   var cast =  x[i].getElementsByTagName("CAST");
+  //   console.log(cast);
+
+  //   table += "<tr><td>" +
+  //   x[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue +
+  //   "</td><td>" +
+  //   x[i].getElementsByTagName("GENRE")[0].childNodes[0].nodeValue +
+  //   "</td><td>";
+  //   x[i].getElementsByTagName("DIRECTOR")[0].childNodes[0].nodeValue +
+  //   "</td><td>";
+  //   x[i].getElementsByTagName("CAST")[0].childNodes[0].nodeValue +
+  //   "</td><td>";
+  //   x[i].getElementsByTagName("SYNOPSIS")[0].childNodes[0].nodeValue +
+  //   "</td><td>";
+  //   x[i].getElementsByTagName("SCORE")[0].childNodes[0].nodeValue +
+  //   "</td></tr>";
+  // }
+  // document.getElementById("demo").innerHTML = table;
+}
+</script>
+
+</body>
+</html>
